@@ -6,7 +6,7 @@
 #define SOFTWARE_RX 2
 #define SOFTWARE_TX 3
 #define RELAY_PIN 7
-#define DISTANCE_THRESHOLD 7       //  Change DISTANCE_THRESHOLD here
+#define DISTANCE_THRESHOLD 8       //  Change DISTANCE_THRESHOLD here
 #define BUZZER_MINIMUM_THRESHOLD 5 //  Change BUZZER_MINIMUM_THRESHOLD here
 #define TANK_HEIGHT 11
 #define BUZZER 6
@@ -28,7 +28,7 @@ void setup()
 void loop()
 {
   String tx_string = "";
-  int waterLevel = 0;
+  unsigned int waterLevel = 0;
 
   waterLevel = Read_Sensor();                // Get Distace
   if (waterLevel < BUZZER_MINIMUM_THRESHOLD) //  Check if distance is greater than DISTANCE_THRESHOLD
@@ -44,6 +44,7 @@ void loop()
   else
   {
     digitalWrite(RELAY_PIN, HIGH); // Set RELAY_PIN to HIGH (Turn OFF RELAY)
+    digitalWrite(BUZZER, LOW);    // Set BUZZER to LOW (Turn OFF buzzer)
   }
   tx_string = "$" + tx_string + String(waterLevel) + "#"; //  Append start and exit characters
   if (waterLevel != 0)
@@ -67,6 +68,7 @@ int Read_Sensor(void)
   *   returns:  distance
   */
   unsigned int distance = 0;
+  unsigned int waterLevel = 0;
   long duration = 0;
   digitalWrite(TRIGGER_PIN, LOW); // Sets the TRIGGER_PIN on LOW state
   delayMicroseconds(2);
@@ -75,6 +77,10 @@ int Read_Sensor(void)
   digitalWrite(TRIGGER_PIN, LOW);     // Sets the TRIGGER_PIN on LOW state
   duration = pulseIn(ECHO_PIN, HIGH); // Reads the ECHO_PIN, returns the sound wave travel time in microseconds
   distance = duration * 0.034 / 2;    // Calculate distance
-  distance = TANK_HEIGHT - distance;
-  return distance;
+  waterLevel = TANK_HEIGHT - distance;  // Calculate water in Tank
+  if(waterLevel < 0){
+   return waterLevel = 0;
+  } else {
+   return waterLevel; 
+  }
 }
