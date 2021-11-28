@@ -6,11 +6,11 @@
 #define BAUD_RATE 115200 //  Change BAUD_RATE here
 #define UPLOAD_STATUS_LED D0
 #define DHT_PIN D1
-#define DHT_TYPE DHT11        // DHT sensor type
-#define SOFTWARE_RX 0         // D3 pin on NodeMCU
-#define SOFTWARE_TX 14        // D5 pin on NodeMCU
-#define MAX_SERIAL_LENGTH 6   // Maximum serial data length
-#define DISTANCE_THRESHOLD 80 //  Change DISTANCE_THRESHOLD here
+#define DHT_TYPE DHT11       // DHT sensor type
+#define SOFTWARE_RX 0        // D3 pin on NodeMCU
+#define SOFTWARE_TX 14       // D5 pin on NodeMCU
+#define MAX_SERIAL_LENGTH 6  // Maximum serial data length
+#define DISTANCE_THRESHOLD 7 //  Change DISTANCE_THRESHOLD here
 
 unsigned long previousMillis = 0;             // Store last updated
 const long interval = 30000;                  // Delay interval (milliseconds)

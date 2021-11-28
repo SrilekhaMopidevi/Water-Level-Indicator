@@ -6,7 +6,10 @@
 #define SOFTWARE_RX 2
 #define SOFTWARE_TX 3
 #define RELAY_PIN 7
-#define DISTANCE_THRESHOLD 80 //  Change DISTANCE_THRESHOLD here
+#define DISTANCE_THRESHOLD 7       //  Change DISTANCE_THRESHOLD here
+#define BUZZER_MINIMUM_THRESHOLD 5 //  Change BUZZER_MINIMUM_THRESHOLD here
+#define TANK_HEIGHT 11
+#define BUZZER 6
 
 SoftwareSerial softwareSerial(SOFTWARE_RX, SOFTWARE_TX);
 
@@ -15,7 +18,9 @@ void setup()
   pinMode(TRIGGER_PIN, OUTPUT);    // Sets the TRIGGER_PIN as an Output
   pinMode(ECHO_PIN, INPUT);        // Sets the ECHO_PIN as an Input
   pinMode(RELAY_PIN, OUTPUT);      // Set RELAY_PIN as an OUTPUT
+  pinMode(BUZZER, OUTPUT);         // Set BUZZER as an OUTPUT
   digitalWrite(RELAY_PIN, HIGH);   // Set RELAY_PIN to HIGH (Turn OFF relay)
+  digitalWrite(BUZZER, LOW);       // Set BUZZER to LOW (Turn OFF buzzer)
   Serial.begin(BAUD_RATE);         // Init Hardware Serial
   softwareSerial.begin(BAUD_RATE); // Init Software Serial
 } // void setup ends
@@ -23,19 +28,25 @@ void setup()
 void loop()
 {
   String tx_string = "";
-  int distance = 0;
+  int waterLevel = 0;
 
-  distance = Read_Sensor();          // Get Distace
-  if (distance > DISTANCE_THRESHOLD) //  Check if distance is greater than DISTANCE_THRESHOLD
+  waterLevel = Read_Sensor();                // Get Distace
+  if (waterLevel < BUZZER_MINIMUM_THRESHOLD) //  Check if distance is greater than DISTANCE_THRESHOLD
   {
     digitalWrite(RELAY_PIN, LOW); //  Set RELAY_PIN to LOW (Turn ON relay)
+    digitalWrite(BUZZER, HIGH);   // Set BUZZER to HIGH (Turn ON buzzer)
+  }
+  else if (waterLevel > BUZZER_MINIMUM_THRESHOLD && waterLevel < DISTANCE_THRESHOLD)
+  {
+    digitalWrite(RELAY_PIN, LOW); //  Set RELAY_PIN to LOW (Turn ON relay)
+    digitalWrite(BUZZER, LOW);    // Set BUZZER to LOW (Turn OFF buzzer)
   }
   else
   {
-    digitalWrite(RELAY_PIN, HIGH); //  Set RELAY_PIN to HIGH (Turn OFF relay)
+    digitalWrite(RELAY_PIN, HIGH); // Set RELAY_PIN to HIGH (Turn OFF RELAY)
   }
-  tx_string = "$" + tx_string + String(distance) + "#"; //  Append start and exit characters
-  if (distance != 0)
+  tx_string = "$" + tx_string + String(waterLevel) + "#"; //  Append start and exit characters
+  if (waterLevel != 0)
   {
     Serial.print("tx data: ");
     Serial.println(tx_string);
@@ -55,7 +66,7 @@ int Read_Sensor(void)
   *   
   *   returns:  distance
   */
-  int distance = 0;
+  unsigned int distance = 0;
   long duration = 0;
   digitalWrite(TRIGGER_PIN, LOW); // Sets the TRIGGER_PIN on LOW state
   delayMicroseconds(2);
@@ -64,6 +75,6 @@ int Read_Sensor(void)
   digitalWrite(TRIGGER_PIN, LOW);     // Sets the TRIGGER_PIN on LOW state
   duration = pulseIn(ECHO_PIN, HIGH); // Reads the ECHO_PIN, returns the sound wave travel time in microseconds
   distance = duration * 0.034 / 2;    // Calculate distance
-
+  distance = TANK_HEIGHT - distance;
   return distance;
 }
