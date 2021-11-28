@@ -1,8 +1,8 @@
 #include <SoftwareSerial.h>
 
 #define BAUD_RATE 115200 //  Change BAUD_RATE here
-#define TRIGGER_PIN 9
-#define ECHO_PIN 10
+#define TRIGGER_PIN 10
+#define ECHO_PIN 9
 #define SOFTWARE_RX 2
 #define SOFTWARE_TX 3
 #define RELAY_PIN 7
