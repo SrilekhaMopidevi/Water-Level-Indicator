@@ -1,0 +1,58 @@
+<html>
+  <head>
+    Water Level Indicator
+  </head>
+  <body>
+    <style>
+      div.a {
+        text-align: center;
+      }
+    </style>
+    <div class="a">
+      <h1>Water Level</h1>
+
+      <iframe
+        width="450"
+        height="260"
+        style="border: 1px solid #cccccc"
+        src="https://thingspeak.com/channels/1586338/widgets/387762"
+      ></iframe>
+
+      <h1>Water level graph</h1>
+
+      <iframe
+        width="450"
+        height="260"
+        style="border: 1px solid #cccccc"
+        src="https://thingspeak.com/channels/1586338/charts/1?bgcolor=%23ffffff&color=%23d62020&dynamic=true&results=60&title=Water+Level+Indicator&type=line&xaxis=Time&yaxis=Level&yaxismin=0"
+      ></iframe>
+
+      <h1>Pump Status</h1>
+
+      <iframe
+        width="450"
+        height="260"
+        style="border: 1px solid #cccccc"
+        src="https://thingspeak.com/channels/1586338/widgets/387768"
+      ></iframe>
+
+      <h1>Temperature</h1>
+
+      <iframe
+        width="450"
+        height="260"
+        style="border: 1px solid #cccccc"
+        src="https://thingspeak.com/channels/1586338/charts/3?bgcolor=%23ffffff&color=%23d62020&dynamic=true&results=60&title=Temperature&type=line&xaxis=Time&yaxis=Temperature"
+      ></iframe>
+
+      <h1>Humidity</h1>
+
+      <iframe
+        width="450"
+        height="260"
+        style="border: 1px solid #cccccc"
+        src="https://thingspeak.com/channels/1586338/charts/4?bgcolor=%23ffffff&color=%23d62020&dynamic=true&results=60&title=Humidity&type=line&xaxis=Time&yaxis=Humidity"
+      ></iframe>
+    </div>
+  </body>
+</html>
